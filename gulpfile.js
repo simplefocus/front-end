@@ -42,7 +42,6 @@ var dist = {
   img               : './dist/img'
 };
 
-
 // Markup
 gulp.task('markup', function() {
   return gulp.src(path.join(src.templates, '*.tpl.html'))
@@ -102,6 +101,19 @@ gulp.task('modernizr', function() {
     .pipe(gulp.dest(path.join(dist.js, '/vendor')));
 });
 
+// Move assets, like .htaccess and crossdomain.xml
+var assets = [
+  './src/.htaccess',
+  './src/*.*', // files with an extension
+  '!./src/*.html', // exclude HTML, we'll handle that elsewhere.
+  '.'
+];
+
+gulp.task('move', function() {
+  return gulp.src(assets)
+    .pipe(gulp.dest(dist.root));
+});
+
 // Clean
 gulp.task('clean', function(cb) {
     del([dist.root, './src/css/*', './src/*.html'], cb)
@@ -109,7 +121,7 @@ gulp.task('clean', function(cb) {
 
 // Default task
 gulp.task('default', ['clean'], function() {
-    gulp.start('markup', 'styles', 'plugins', 'scripts', 'images', 'modernizr');
+    gulp.start('markup', 'styles', 'plugins', 'scripts', 'images', 'modernizr', 'move');
 });
 
 // Watch
