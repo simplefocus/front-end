@@ -1,4 +1,4 @@
-src/_bower_components
+src/_bower_components/*
 node_modules
 dist
 .DS_Store
