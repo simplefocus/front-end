@@ -25,22 +25,22 @@ var del             = require('del');
 
 // Source Paths
 var src = {
-  root              = './src',
-  bower             = './src/_bower_components',
-  modernizr         = './src/js/vendor/modernizr-2.6.2.min.js',
-  templates         = './src/_templates/',
-  scss              = './src/_scss',
-  css               = './src/css',
-  js                = './src/js',
-  img               = './src/img'
+  root              : './src',
+  bower             : './src/_bower_components',
+  modernizr         : './src/js/vendor/modernizr-2.6.2.min.js',
+  templates         : './src/_templates/',
+  scss              : './src/_scss',
+  css               : './src/css',
+  js                : './src/js',
+  img               : './src/img'
 };
 
 // Dist Paths
 var dist = {
-  root              = './dist',
-  css               = './dist/css',
-  js                = './dist/js',
-  img               = './dist/img'
+  root              : './dist',
+  css               : './dist/css',
+  js                : './dist/js',
+  img               : './dist/img'
 };
 
 
