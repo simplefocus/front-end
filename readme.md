@@ -11,11 +11,11 @@ Front-End utilizes:
 
 It will also minify and concatenate the things that need minification and concatenation. **Fancy!**
 
-## Requirements
+##Requirements
 * [Node.JS](http://nodejs.org/)
 * [Gulp](http://gulpjs.com/)
 
-## Installation
+##Installation
 **Install Gulp globally**
 `$ npm install -g gulp`
 
@@ -27,3 +27,15 @@ It will also minify and concatenate the things that need minification and concat
 
 **To start the server:**
 `$ gulp watch`
+
+##Templates
+
+Use `@@include()` to include files.
+```html
+<!DOCTYPE html>
+<html>
+  <body>
+  @@include('./src/_templates/_head.html')
+  </body>
+</html>
+```
