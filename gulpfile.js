@@ -1,6 +1,6 @@
 /*!
  * gulp
- * $ npm install gulp gulp-sass gulp-autoprefixer gulp-minify-css gulp-jshint gulp-concat gulp-uglify gulp-imagemin gulp-notify gulp-rename gulp-livereload gulp-cache del --save-dev
+ * $ npm install gulp browser-sync main-bower-files fileinclude gulp-sass gulp-autoprefixer gulp-minify-css gulp-jshint gulp-concat gulp-uglify gulp-imagemin gulp-notify gulp-rename gulp-livereload gulp-cache del --save-dev
  */
 
 // Load plugins
@@ -17,16 +17,15 @@ var notify          = require('gulp-notify');
 var cache           = require('gulp-cache');
 var browserSync     = require('browser-sync');
 var reload          = browserSync.reload;
-var kit             = require('gulp-kit');
 var mainBowerFiles  = require('main-bower-files');
-var header          = require('gulp-header');
 var fileinclude     = require('gulp-file-include');
 var del             = require('del');
+var path            = require('path');
 
 // Source Paths
 var src = {
   root              : './src',
-  bower             : './src/_bower_components',
+  bower             : './src/_bower_components/',
   modernizr         : './src/js/vendor/modernizr-2.6.2.min.js',
   templates         : './src/_templates/',
   scss              : './src/_scss',
@@ -48,7 +47,8 @@ var dist = {
 gulp.task('markup', function() {
   return gulp.src(path.join(src.templates, '*.tpl.html'))
     .pipe(fileinclude())
-    .pipe(rename({ suffix: '' }))
+    .pipe(rename({ extname: '' }))
+    .pipe(rename({ extname: '.html' }))
     .pipe(gulp.dest( src.root ))
     .pipe(gulp.dest( dist.root ))
     .pipe(notify({ message: 'Markup task complete' }));
@@ -69,16 +69,15 @@ gulp.task('styles', function() {
 
 // Plugins
 gulp.task('plugins', function() {
-  return gulp.src(mainBowerFiles(), { base: bowerPath })
+  return gulp.src(mainBowerFiles())
     .pipe(concat('plugins.js'))
-    .pipe(header('// jshint ignore: start'))
     .pipe(gulp.dest(src.js))
     .pipe(notify({ message: 'Plugins task complete' }));
 });
 
 // Scripts
 gulp.task('scripts', function() {
-  return gulp.src([src.js+'/plugins.js',src.js+'/**/*.js'])
+  return gulp.src([path.join(src.js, '/plugins.js'), path.join(src.js, '/**/*.js'), '!'+src.js+'/vendor/*.js'])
     .pipe(jshint('.jshintrc'))
     .pipe(jshint.reporter('default'))
     .pipe(concat('scripts.js'))
@@ -105,12 +104,12 @@ gulp.task('modernizr', function() {
 
 // Clean
 gulp.task('clean', function(cb) {
-    del([dist.css, dist.js, dist.img], cb)
+    del([dist.root, './src/css/*'], cb)
 });
 
 // Default task
 gulp.task('default', ['clean'], function() {
-    gulp.start('markup', 'styles', 'scripts', 'images');
+    gulp.start('markup', 'styles', 'plugins', 'scripts', 'images', 'modernizr');
 });
 
 // Watch
