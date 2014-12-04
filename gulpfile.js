@@ -104,7 +104,7 @@ gulp.task('modernizr', function() {
 
 // Clean
 gulp.task('clean', function(cb) {
-    del([dist.root, './src/css/*'], cb)
+    del([dist.root, './src/css/*', './src/*.html'], cb)
 });
 
 // Default task
@@ -113,28 +113,28 @@ gulp.task('default', ['clean'], function() {
 });
 
 // Watch
-gulp.task('watch', function() {
+gulp.task('watch', ['default'], function() {
 
-  // Watch .kit files
-  gulp.watch('src/**/*.kit', ['markup']);
+  // Watch .html files
+  gulp.watch('./src/**/*.html', ['markup']);
 
   // Watch .scss files
-  gulp.watch('src/scss/**/*.scss', ['styles']);
+  gulp.watch('./src/scss/**/*.scss', ['styles']);
 
   // Watch .js files
-  gulp.watch('src/js/**/*.js', ['scripts']);
+  gulp.watch('./src/js/**/*.js', ['scripts']);
 
   // Watch image files
-  gulp.watch('src/img/**/*', ['images']);
+  gulp.watch('./src/img/**/*', ['images']);
 
   // Turn on Browser Sync server
   browserSync({
       server: {
-          baseDir: "./"
+          baseDir: "./dist/"
       }
   });
 
   // Watch any files in dist/, reload on change
-  gulp.watch(['dist/**']).on('change', browserSync.reload);
+  gulp.watch(['./dist/**']).on('change', browserSync.reload);
 
 });
